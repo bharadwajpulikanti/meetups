@@ -22,7 +22,7 @@ function NewMeetupForm() {
           <input type="text" required id="address" />
         </div>
         <div className={classes.control}>
-          <label htmlFor="description">Description Area</label>
+          <label htmlFor="description">Description</label>
           <textarea id="description" required rows="5"></textarea>
         </div>
         <div className={classes.actions}>
