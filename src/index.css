@@ -7,7 +7,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   margin: 0;
-  background-color: #fcf3f6;
+  background-color: #69a189;
 }
 
 h1 {
@@ -18,4 +18,9 @@ h1 {
 h2 {
   font-size: 1.5rem;
   color: #2c292b;
+}
+
+p {
+  text-align: justify;
+  text-justify: inter-word;
 }
