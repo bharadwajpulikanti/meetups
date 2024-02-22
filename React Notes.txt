@@ -1,0 +1,130 @@
+What is react ?
+	A Java Script library for building User Interfaces.
+	index.js is the starting point of our react application
+**************************************************************************************************************
+////////HOOKS///////	
+useState is called directly only in the react component functions and in custom hooks
+useState accepts an initial value of the state and  always returns an array with exactly 2 elements  in which the 2nd element is a function which can modify the value of the first element.	
+***************************************************************************************************************
+//////Routing///////
+First intall the below
+npm install react-router-dom
+To work on Routing ...,
+	=> import { Route, Routes } from "react-router-dom";
+	=>  <Routes>
+          <Route path="/" element={<AllMeetups />} />
+          <Route path="/new-meetup" element={<NewMeetup />} />
+          <Route path="/favourites" element={<Favourites />} />
+        </Routes>
+Summary of Routes and Route
+	=> <Routes> is used to wrap all the routes in your application. It's typically placed at the root level of your application.
+	=> <Route> components are nested inside <Routes> and define individual routes and their corresponding components
+	=> Here in the element we are giving the component which we want to route and Each URL path specified in the path prop acts as a route within your application which can be accessed by changing the url
+	Ex : our url is say ---> https://localhost/3000/
+		 -> To access Meetups component, append the url mentioned in the path prop of route component ... as the path is "/". the existing url directly navigates to AllMeetups component page
+		 -> Similarly, changing the url to https://localhost/3000/new-meetup and https://localhost/3000/favourites can navigate to NewMeetup and Favourites component page respectively
+	=> Instead of manually changing the url to navigate to different components or pages mentioned in the element prop , we can do this by clicking on a link in the UI, to do so we can use 'Link' component to navigate between different rotues. Link component generates an anchor '<a>' tag with the specified destination route and when clicked , it navigates to that route without causing a full page reload.
+	Ex : This is how we use Link component, In the Link Component we have a prop called 'to' in which we mention the route path.
+		import { Link } from "react-router-dom";
+		<Link to="/">All Meetups</Link>
+		<Link to="/new-meetup">Add New Meetup</Link>
+		<Link to="/favourites">My Favourites</Link>
+***************************************************************************************************************
+Sample Form Snippet code to understand the Refs concept clearly
+  <form className={classes.form} onSubmit={submitHandler}>
+        <div className={classes.control}>
+          <label htmlFor="title">Meetup Title</label>
+          <input type="text" required id="title" />  ------(i)-----
+        </div>
+  <form/>
+///////////REFS////////
+	=>Refs means References, react will allow us to setup references to the DOM elements, means we can get direct access to dom elements instead of writing a event handler like 'onChange' when we enter the data to the input element which will re-render the component multiple times.
+	=>To do so we need to import useRef hook Ex: import  { useRef } from "react";
+	=>useRef is a built in special function offered by react which we can execute in our functional components.
+	=> useRef(); by executing this useRef() function inside the functional component , with that we create a referece obj which we can store in const variable. Ex :  const titleInputRef = useRef();
+	=> Now to connect the referece obj 'titleInputRef' to the title input--(i)--, we will add another prop to this html element and the prop is 'ref' prop and the value to this 'ref' prop is the 'titleInputRef' reference.
+		Ex:  <div className={classes.control}>
+			  <label htmlFor="title">Meetup Title</label>
+			  <input type="text" required id="title" ref={titleInputRef} />
+			 </div>
+	=> This provides the access to the input element through 'titleInputRef' referece and to get the entered value in the (form-submit) submitHandler function we can check below example
+		Ex: function submitHandler(event) {
+			event.preventDefault();
+			const enteredTitle = titleInputRef.current.value;
+		}
+	=> All the ref objects created using 'useRef()' have a 'current' property which holds the actual connected value
+	=> refs are useful for reading the entered data , but to update an input element .. we need to use useState.
+	=> We can have more than one ref per component
+**************************************************************************************************************
+//////////HTTP Requests//////////
+	=>For Sending Http Requests we can use fetch() function which is a default js function
+	=> Here in fetch() function, first argument should be string url for which we want to send the request
+	=> Here in our project, url is the firebase url 'https://react-getting-started-3e1d4-default-rtdb.firebaseio.com/'
+	=> For this url we can manipulate, means we can add segments after the domain(in url) and this segments will be translated to folders means(like collections, tables..)
+	=> Now the url can be...'fetch("https://react-getting-started-3e1d4-default-rtdb.firebaseio.com/meetups.json") -- In this meetups is the segment which is added to the firebase url and the meetups segment must have .json extention which is firebase reqirement.
+	=> Ex:   fetch(
+      "https://react-getting-started-3e1d4-default-rtdb.firebaseio.com/meetups.json"
+    );
+	=> Now this is the url to which we will send requests. But we want to store data on firebase servers and to signal to firebase and to this api that we want to store data we actually must send a post request and by default fetch() sends a  a get request.
+	=> Most apis storing data requires post requests.
+	=> To add a post request to the fetch() we will add a second argument to the fetch function  and that second argument is an 'Object {}' which allows us to configure the fetch function call and this http request.
+	=>In the object we can set a method property .. to define the http method that will be used and we can set that method to 'POST'.
+	=> Ex:   fetch(
+      "https://react-getting-started-3e1d4-default-rtdb.firebaseio.com/meetups.json",
+      { method: "POST" }
+    );
+	=> Now when we send a 'POST' request ,  we need to also add the data to the request .. the data which we want to store. We do that through the 'body' field. Now 'body' wants the data that we want to append and that data should be in json format.
+	=> In javascript we can easily create json by using built in JSON object and calling stringify() method. To the stringify method we can pass default js objects, arrays or values. And last we can add some headers.
+	=> Ex:  fetch(
+      "https://react-getting-started-3e1d4-default-rtdb.firebaseio.com/meetups.json",
+      {
+        method: "POST",
+        body: JSON.stringify(meetupData),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+***************************************************************************************************************
+////////////useHistory////////////
+	=> useHistory is a hook provided by React Router that gives the access to the history object, which allows us to manage navigation in React Application.This hook is used in functional components to programatically navigate to different routes like go back or go forward.
+	=> The history object represents the session history of the browser, including the URL path, query parameters, and other navigation-related information. By using the methods provided by the history object, such as push(), replace(), goBack(), and goForward(), you can navigate between different routes without causing a full page reload.
+	=>Here's a brief overview of some of the methods available on the history object:
+		=>push(path, [state]): Pushes a new entry onto the history stack, navigating to the specified path. This method is typically used for standard navigation.
+		=>replace(path, [state]): Replaces the current entry on the history stack with a new one, navigating to the specified path. This method is similar to push(), but it replaces the current entry instead of adding a new one.
+		=>goBack(): Navigates to the previous entry in the history stack. This method is equivalent to clicking the browser's back button.
+		=>goForward(): Navigates to the next entry in the history stack. This method is equivalent to clicking the browser's forward button.
+	=>By using useHistory() hook, you can access the history object within your functional components and perform navigation programmatically based on user interactions or other conditions in your application.
+
+***************************************************************************************************************
+//////////useNavigate//////////
+	=>useHistory is not available in the latest versions of react-router, so we will use useNavigate
+	=>useNavigate provides a function that allows you to navigate programmatically within your application. However, unlike useHistory in React Router v5, useNavigate does not provide direct access to the history object. Instead, it abstracts away the details of the underlying navigation mechanism.
+	=>Ex: 	import { useNavigate } from 'react-router-dom';
+			function MyComponent() {
+				const navigate = useNavigate();
+				const handleClick = () => {
+					// Navigates to '/about' when the button is clicked
+					navigate('/about');
+				};
+				return (
+					<div>
+						<button onClick={handleClick}>Go to About page</button>
+					</div>
+				);
+			}
+	=> Ex: using of navigate  after fetch method
+			 fetch(
+					"https://react-getting-started-3e1d4-default-rtdb.firebaseio.com/meetups.json",
+					{
+						method: "POST",
+						body: JSON.stringify(meetupData),
+						headers: { "Content-Type": "application/json" },
+					}
+				).then(() => {
+					navigate("/");  //Here navigates to the component or page with Route with path prop as '/'
+				});
+****************************************************************************************************************
+////CSS////////
+box-sizing : It allows us to include the padding and border in an element's total width and height.
+rem : Relative to font-size of the root element
+box-shadow : This property attaches one or more shadows to an element.
+

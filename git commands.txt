@@ -1,0 +1,17 @@
+If you've made changes to your React application locally and you want to update the code on GitHub, you can follow these steps:
+***********************************************************************************************
+Commit Your Changes:
+First, commit your changes to your local git repository and Push Changes to GitHub:
+Once you've committed your changes locally, you can push them to your GitHub repository.
+
+git add .
+git commit -m "Description of changes made"
+git push origin main
+
+************************************************************************************************
+If you've made significant changes to your React application, you might need to rebuild and redeploy it to GitHub Pages. If you've only made minor changes and don't need to rebuild, you can skip this step.
+
+npm run build
+npm run deploy
+
+************************************************************************************************
