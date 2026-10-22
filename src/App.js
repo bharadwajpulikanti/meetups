@@ -1,4 +1,4 @@
-import React from "react";
+import "react";
 import { Route, Routes } from "react-router-dom";
 import AllMeetups from "./pages/AllMeetups";
 import Favourites from "./pages/Favourites";
